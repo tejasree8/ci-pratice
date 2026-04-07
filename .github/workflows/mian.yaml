@@ -1,0 +1,11 @@
+name: CIWorkflow
+
+on: [push]
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print hello
+        run: echo "this is a class"
