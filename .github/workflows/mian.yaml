@@ -7,17 +7,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout code
-        uses: actions/checkout@v3
+      - name: login to Dockerhub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | Docker Login-u "${{ secrets.DOCKER_USERNAME }}" --password stdin
 
-      - name: build Docker Image
-        run: docker build -t myapp .
+      - name: Build Image
+        run: docker build -t "${{ secrets.DOCKER_USERNAME }}"/ci-pratice "${{ github.run_number }}" .
 
-      - name: Run container
-        run: docker run -d -p 8080:80 myapp
-
-      - name: wait for container
-        run: sleep 5
-
-      - name: check output
-        run: curl http://localhost:8080 
+      - name: push to Dockerhub
+        run: docker push "${{ secrets.DOCKER_USERNAME }}"/ci-pratice "${{ github.run_number }}"
